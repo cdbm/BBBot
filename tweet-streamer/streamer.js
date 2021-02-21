@@ -1,6 +1,7 @@
 const Twit = require('twit');
 const keys = require('./keys');
 let BBB = require('./participantes');
+var fs = require('fs')
 
 var T = new Twit(keys);
 
@@ -19,7 +20,17 @@ stream.on('tweet', function (tweet) {
             }
         })
     })
+
+    console.log(BBB[0].tweets)
 });
+
+setTimeout(() => {
+    stream.stop();
+    console.log('foi de berço');
+    fs.writeFile("BBB.json", JSON.stringify(BBB), function(err, result) {
+        if(err) console.log('error', err);
+    })
+}, 1000 * 5)
 
 stream.on('error', function(err){
     console.log(err)
