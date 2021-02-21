@@ -2,7 +2,7 @@ let BBB = [
     {
         nome: 'BBB',
         tweets: 0,
-        queries: ['#bbb','#bbb21']
+        queries: ['#bbb','#bbb21', '#redebbb', '#redebbb21']
     },
     {
         nome: 'Gilberto',

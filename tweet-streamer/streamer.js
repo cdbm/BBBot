@@ -6,8 +6,8 @@ var fs = require('fs')
 var T = new Twit(keys);
 
 
-let stream = T.stream('statuses/filter', { track: ['#bbb','#bbb21'] });
-
+let stream = T.stream('statuses/filter', { track: ['#bbb','#bbb21','#redebbb', '#redebbb21'] });
+console.log('getting...')
 
 stream.on('tweet', function (tweet) {
     let TweetObject = getTweetObject(tweet);
@@ -20,8 +20,6 @@ stream.on('tweet', function (tweet) {
             }
         })
     })
-
-    console.log(BBB[0].tweets)
 });
 
 setTimeout(() => {
@@ -30,7 +28,7 @@ setTimeout(() => {
     fs.writeFile("BBB.json", JSON.stringify(BBB), function(err, result) {
         if(err) console.log('error', err);
     })
-}, 1000 * 5)
+}, 1000 * 60 * 60)
 
 stream.on('error', function(err){
     console.log(err)
