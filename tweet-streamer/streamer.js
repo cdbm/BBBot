@@ -2,16 +2,18 @@ const Twit = require('twit');
 const keys = require('./keys');
 let BBB = require('./participantes');
 var fs = require('fs')
+var emojiStrip = require('emoji-strip')
 
 var T = new Twit(keys);
 
-
+let writeStream = fs.createWriteStream("BBB.txt")
 let stream = T.stream('statuses/filter', { track: ['#bbb','#bbb21','#redebbb', '#redebbb21'] });
 console.log('getting...')
 
 stream.on('tweet', function (tweet) {
     let TweetObject = getTweetObject(tweet);
     let text = TweetObject.text.toLowerCase();
+    writeTxt(text);
     BBB.forEach(elem => {
         elem.queries.forEach(query => {
             if(text.includes(query)){
@@ -22,17 +24,28 @@ stream.on('tweet', function (tweet) {
     })
 });
 
+
 setTimeout(() => {
     stream.stop();
     console.log('foi de berço');
     fs.writeFile("BBB.json", JSON.stringify(BBB), function(err, result) {
         if(err) console.log('error', err);
     })
-}, 1000 * 60 * 60)
+    writeStream.end()
+}, 1000 * 5)
 
 stream.on('error', function(err){
     console.log(err)
 })
+
+
+function writeTxt(text){
+    text = text.replace("#bbb", "")
+    text = text.replace("#redebbb", "")
+    text = text.replace("#redebbb21", "")
+    text = emojiStrip(text)
+    writeStream.write(text + " ")
+}
 
 
 
