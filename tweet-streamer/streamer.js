@@ -32,7 +32,7 @@ setTimeout(() => {
         if(err) console.log('error', err);
     })
     writeStream.end()
-}, 1000 * 60)
+}, 1000 * 60 * 10)
 
 stream.on('error', function(err){
     console.log(err)
@@ -40,9 +40,9 @@ stream.on('error', function(err){
 
 
 function writeTxt(text){
-    text = text.replace("#bbb", "")
-    text = text.replace("#redebbb", "")
-    text = text.replace("#redebbb21", "")
+    text = text.replace("#bbb ", "")
+    text = text.replace("#redebbb ", "")
+    text = text.replace("#redebbb21 ", "")
     text = text.replace(/(https?:\/\/(www.)?[-a-zA-Z0-9@:%.+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%+.~#?&//=]*))/g, "")
     text = emojiStrip(text)
     writeStream.write(text + " ")
