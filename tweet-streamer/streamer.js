@@ -3,7 +3,7 @@ const keys = require('./keys');
 let BBB = require('./participantes');
 var fs = require('fs')
 var emojiStrip = require('emoji-strip')
-
+const http = require('http');
 var T = new Twit(keys);
 
 let writeStream = fs.createWriteStream("BBB.txt")
@@ -24,15 +24,36 @@ stream.on('tweet', function (tweet) {
     })
 });
 
+function formatTweetResult(){
+    BBB.sort((a, b) => {
+        if(a.tweets > b.tweets)
+            return -1;
+        else return 1;
+    })
+    let BaseTextTweet = ""
+    BBB.forEach(elem => {
+        BaseTextTweet =BaseTextTweet + elem.nome + ": " + elem.tweets + "\n";
+    })
+    return BaseTextTweet;
+}
 
 setTimeout(() => {
     stream.stop();
     console.log('foi de berço');
+    console.log(formatTweetResult());
     fs.writeFile("BBB.json", JSON.stringify(BBB), function(err, result) {
         if(err) console.log('error', err);
     })
     writeStream.end()
-}, 1000 * 60 * 10)
+    http.get({
+        hostname: 'localhost',
+        port: 5000,
+        path: '/createCloud'
+    }, (res) => {
+        console.log(res.statusCode)
+        console.log("sent to cloud maker")
+    })
+}, 1000 * 60 * 50)
 
 stream.on('error', function(err){
     console.log(err)
